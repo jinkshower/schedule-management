@@ -40,15 +40,28 @@ public class ScheduleService {
     @Transactional
     public ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto) {
         Schedule schedule = findSchedule(id);
-        if (!schedule.getPassword().equals(scheduleRequestDto.getPassword())) {
-            throw new IllegalArgumentException("패스워드가 다릅니다");
-        }
+        validatePassword(schedule.getPassword(), scheduleRequestDto.getPassword());
+
         schedule.update(scheduleRequestDto);
         return new ScheduleResponseDto(schedule);
+    }
+
+    public Long deleteSchedule(Long id, ScheduleRequestDto scheduleRequestDto) {
+        Schedule schedule = findSchedule(id);
+        validatePassword(schedule.getPassword(), scheduleRequestDto.getPassword());
+
+        scheduleRepository.delete(schedule);
+        return id;
     }
 
     private Schedule findSchedule(Long id) {
         return scheduleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("선택된 메모를 찾을 수 없습니다."));
+    }
+
+    private void validatePassword(String origin, String input) {
+        if (!origin.equals(input)) {
+            throw new IllegalArgumentException("패스워드가 다릅니다");
+        }
     }
 }
