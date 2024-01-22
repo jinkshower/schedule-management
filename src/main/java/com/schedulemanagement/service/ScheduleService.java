@@ -6,6 +6,8 @@ import com.schedulemanagement.entity.Schedule;
 import com.schedulemanagement.repository.ScheduleRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,30 +40,28 @@ public class ScheduleService {
     }
 
     @Transactional
-    public ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto) {
+    public ResponseEntity<ScheduleResponseDto> updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto) {
         Schedule schedule = findSchedule(id);
-        validatePassword(schedule.getPassword(), scheduleRequestDto.getPassword());
+        if (!schedule.getPassword().equals(scheduleRequestDto.getPassword())) {
+            return new ResponseEntity<>(HttpStatusCode.valueOf(403));
+        }
 
         schedule.update(scheduleRequestDto);
-        return new ScheduleResponseDto(schedule);
+        return ResponseEntity.ok().body(new ScheduleResponseDto(schedule));
     }
 
-    public Long deleteSchedule(Long id, ScheduleRequestDto scheduleRequestDto) {
+    public ResponseEntity<Void> deleteSchedule(Long id, ScheduleRequestDto scheduleRequestDto) {
         Schedule schedule = findSchedule(id);
-        validatePassword(schedule.getPassword(), scheduleRequestDto.getPassword());
+        if (!schedule.getPassword().equals(scheduleRequestDto.getPassword())) {
+            return new ResponseEntity<>(HttpStatusCode.valueOf(403));
+        }
 
         scheduleRepository.delete(schedule);
-        return id;
+        return ResponseEntity.noContent().build();
     }
 
     private Schedule findSchedule(Long id) {
         return scheduleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("선택된 메모를 찾을 수 없습니다."));
-    }
-
-    private void validatePassword(String origin, String input) {
-        if (!origin.equals(input)) {
-            throw new IllegalArgumentException("패스워드가 다릅니다");
-        }
     }
 }

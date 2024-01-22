@@ -4,6 +4,7 @@ import com.schedulemanagement.dto.ScheduleRequestDto;
 import com.schedulemanagement.dto.ScheduleResponseDto;
 import com.schedulemanagement.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,29 +21,30 @@ public class ScheduleController {
     }
 
     @PostMapping
-    public ScheduleResponseDto createSchedule(@RequestBody ScheduleRequestDto scheduleRequestDto) {
-        return scheduleService.createSchedule(scheduleRequestDto);
+    public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody ScheduleRequestDto scheduleRequestDto) {
+        ScheduleResponseDto dto = scheduleService.createSchedule(scheduleRequestDto);
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping
-    public List<ScheduleResponseDto> getSchedules() {
-        return scheduleService.getSchedules();
+    public ResponseEntity<List<ScheduleResponseDto>> getSchedules() {
+        return ResponseEntity.ok(scheduleService.getSchedules());
     }
 
     @GetMapping("/{id}")
-    public ScheduleResponseDto getSchedule(@PathVariable Long id) {
-        return scheduleService.getSchedule(id);
+    public ResponseEntity<ScheduleResponseDto> getSchedule(@PathVariable Long id) {
+        return ResponseEntity.ok(scheduleService.getSchedule(id));
     }
 
     @PutMapping("/{id}")
-    public ScheduleResponseDto updateSchedule(@PathVariable Long id,
+    public ResponseEntity<ScheduleResponseDto> updateSchedule(@PathVariable Long id,
                                               @RequestBody ScheduleRequestDto scheduleRequestDto) {
         return scheduleService.updateSchedule(id, scheduleRequestDto);
     }
 
     @DeleteMapping("/{id}")
-    public Long deleteSchedule(@PathVariable Long id,
-                                 @RequestBody ScheduleRequestDto scheduleRequestDto) {
+    public ResponseEntity<Void> deleteSchedule(@PathVariable Long id,
+                                               @RequestBody ScheduleRequestDto scheduleRequestDto) {
         return scheduleService.deleteSchedule(id, scheduleRequestDto);
     }
 }
