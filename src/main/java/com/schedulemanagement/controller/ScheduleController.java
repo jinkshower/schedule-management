@@ -30,8 +30,8 @@ public class ScheduleController {
     }
 
     @GetMapping("/{id}")
-    public String getSchedule(@PathVariable Long id) {
-        return id + "get";
+    public ScheduleResponseDto getSchedule(@PathVariable Long id) {
+        return scheduleService.getSchedule(id);
     }
 
     @PutMapping("/{id}")

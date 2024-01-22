@@ -30,4 +30,14 @@ public class ScheduleService {
                 .map(ScheduleResponseDto::new)
                 .toList();
     }
+
+    public ScheduleResponseDto getSchedule(Long id) {
+         Schedule schedule = findSchedule(id);
+         return new ScheduleResponseDto(schedule);
+    }
+
+    private Schedule findSchedule(Long id) {
+        return scheduleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("선택된 메모를 찾을 수 없습니다."));
+    }
 }
