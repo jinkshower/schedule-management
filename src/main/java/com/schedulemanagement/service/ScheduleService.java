@@ -4,6 +4,7 @@ import com.schedulemanagement.dto.ScheduleRequestDto;
 import com.schedulemanagement.dto.ScheduleResponseDto;
 import com.schedulemanagement.entity.Schedule;
 import com.schedulemanagement.repository.ScheduleRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,16 @@ public class ScheduleService {
     public ScheduleResponseDto getSchedule(Long id) {
          Schedule schedule = findSchedule(id);
          return new ScheduleResponseDto(schedule);
+    }
+
+    @Transactional
+    public ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto) {
+        Schedule schedule = findSchedule(id);
+        if (!schedule.getPassword().equals(scheduleRequestDto.getPassword())) {
+            throw new IllegalArgumentException("패스워드가 다릅니다");
+        }
+        schedule.update(scheduleRequestDto);
+        return new ScheduleResponseDto(schedule);
     }
 
     private Schedule findSchedule(Long id) {

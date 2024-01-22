@@ -35,8 +35,9 @@ public class ScheduleController {
     }
 
     @PutMapping("/{id}")
-    public String updateSchedule(@PathVariable Long id) {
-        return id + "put";
+    public ScheduleResponseDto updateSchedule(@PathVariable Long id,
+                                              @RequestBody ScheduleRequestDto scheduleRequestDto) {
+        return scheduleService.updateSchedule(id, scheduleRequestDto);
     }
 
     @DeleteMapping("/{id}")
