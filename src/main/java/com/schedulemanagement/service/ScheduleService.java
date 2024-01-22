@@ -6,7 +6,6 @@ import com.schedulemanagement.entity.Schedule;
 import com.schedulemanagement.repository.ScheduleRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -40,28 +39,29 @@ public class ScheduleService {
     }
 
     @Transactional
-    public ResponseEntity<ScheduleResponseDto> updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto) {
+    public ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto) {
         Schedule schedule = findSchedule(id);
-        if (!schedule.getPassword().equals(scheduleRequestDto.getPassword())) {
-            return new ResponseEntity<>(HttpStatusCode.valueOf(403));
-        }
+        validatePassword(schedule.getPassword(), scheduleRequestDto.getPassword());
 
         schedule.update(scheduleRequestDto);
-        return ResponseEntity.ok().body(new ScheduleResponseDto(schedule));
+        return new ScheduleResponseDto(schedule);
     }
 
-    public ResponseEntity<Void> deleteSchedule(Long id, ScheduleRequestDto scheduleRequestDto) {
+    public void deleteSchedule(Long id, ScheduleRequestDto scheduleRequestDto) {
         Schedule schedule = findSchedule(id);
-        if (!schedule.getPassword().equals(scheduleRequestDto.getPassword())) {
-            return new ResponseEntity<>(HttpStatusCode.valueOf(403));
-        }
+        validatePassword(schedule.getPassword(), scheduleRequestDto.getPassword());
 
         scheduleRepository.delete(schedule);
-        return ResponseEntity.noContent().build();
     }
 
     private Schedule findSchedule(Long id) {
         return scheduleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("선택된 메모를 찾을 수 없습니다."));
+    }
+
+    private void validatePassword(String origin, String input) {
+        if (!origin.equals(input)) {
+            throw new IllegalArgumentException("비밀번호가 다릅니다");
+        }
     }
 }
