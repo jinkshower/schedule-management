@@ -1,7 +1,6 @@
 package com.schedulemanagement.entity;
 
 import com.schedulemanagement.dto.ScheduleRequestDto;
-import com.schedulemanagement.dto.ScheduleResponseDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "schedule")
 @NoArgsConstructor
-public class Schedule {
+public class Schedule extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,5 +23,9 @@ public class Schedule {
     private String password;
 
     public Schedule(ScheduleRequestDto requestDto) {
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+        this.author = requestDto.getAuthor();
+        this.password = requestDto.getPassword();
     }
 }
