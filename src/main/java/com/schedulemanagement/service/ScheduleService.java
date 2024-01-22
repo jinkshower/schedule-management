@@ -7,6 +7,8 @@ import com.schedulemanagement.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ScheduleService {
 
@@ -21,5 +23,11 @@ public class ScheduleService {
         Schedule schedule = new Schedule(scheduleRequestDto);
         scheduleRepository.save(schedule);
         return new ScheduleResponseDto(schedule);
+    }
+
+    public List<ScheduleResponseDto> getSchedules() {
+        return scheduleRepository.findAllByOrderByCreatedAtDesc().stream()
+                .map(ScheduleResponseDto::new)
+                .toList();
     }
 }

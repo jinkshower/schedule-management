@@ -2,10 +2,11 @@ package com.schedulemanagement.controller;
 
 import com.schedulemanagement.dto.ScheduleRequestDto;
 import com.schedulemanagement.dto.ScheduleResponseDto;
-import com.schedulemanagement.entity.Schedule;
 import com.schedulemanagement.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/schedule")
@@ -24,8 +25,8 @@ public class ScheduleController {
     }
 
     @GetMapping
-    public String getSchedules() {
-        return "default get";
+    public List<ScheduleResponseDto> getSchedules() {
+        return scheduleService.getSchedules();
     }
 
     @GetMapping("/{id}")

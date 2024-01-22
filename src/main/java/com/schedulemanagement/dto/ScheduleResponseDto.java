@@ -11,13 +11,11 @@ public class ScheduleResponseDto {
     private String content;
     private String author;
     private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
 
     public ScheduleResponseDto(Schedule schedule) {
         this.title = schedule.getTitle();
         this.content = schedule.getContent();
         this.author = schedule.getAuthor();
         this.createdAt = schedule.getCreatedAt();
-        this.modifiedAt = schedule.getModifiedAt();
     }
 }
