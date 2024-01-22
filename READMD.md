@@ -15,3 +15,12 @@
  - [ ] 선택한 일정 삭제 
    - [ ] 비밀번호 일치시에만 삭제 가능
  - [ ] 일정 정보 반환시 비밀번호는 제외한다
+
+| HttpMethod | URL | Description |
+| ---- | ---- | ---- |
+| POST | /schedule | 일정을 등록한다 |
+| GET | /schedule | 일정 목록 전체를 조회한다 |
+| GET | /schedule/{id} | 선택 일정을 조회한다 |
+| PUT | /schedule | 선택일정을 수정한다 |
+| DELETE | /schedule/{id} | 선택일정을 삭제한다 |
+
