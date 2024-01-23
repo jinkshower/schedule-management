@@ -24,3 +24,7 @@
 | PUT | /schedule/{id} | 선택일정을 수정한다 |
 | DELETE | /schedule/{id} | 선택일정을 삭제한다 |
 
+ERD Table
+![schedule-management-erd](https://github.com/jinkshower/schedule-management/assets/135244018/e25f7b8e-7eac-485f-a7cd-cfe4a6ef2ea9)
+Use-Case
+![schedule-management-usecase](https://github.com/jinkshower/schedule-management/assets/135244018/84924f21-17e6-4215-9e38-045c2b534e04)
